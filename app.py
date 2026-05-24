@@ -171,7 +171,7 @@ payment_method = payment_map[payment_method]
 
 if st.button("Predict Churn"):
 
-    url = "http://127.0.0.1:8000/predict"
+    url = "https://customer-churn-project-ouq1.onrender.com/predict"
 
     data = {
         "gender": gender,
@@ -200,7 +200,7 @@ if st.button("Predict Churn"):
     # ============================================
 
     try:
-        response = requests.post(url, json=data, timeout=5)
+        response = requests.post(url, json=data, timeout=60)
 
         response.raise_for_status()
 
