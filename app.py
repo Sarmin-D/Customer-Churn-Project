@@ -270,10 +270,10 @@ if st.button("Predict Churn"):
     # ============================================
 
     except requests.exceptions.ConnectionError:
-        st.error("❌ Backend server run nahi ho raha (FastAPI down hai)")
+        st.error("❌ Backend server issue  (FastAPI is down)")
 
     except requests.exceptions.Timeout:
-        st.error("⏰ Request timeout ho gaya")
+        st.error("⏰ Request timeout over")
 
     except Exception as e:
         st.error(f"❌ Unexpected error: {str(e)}")
