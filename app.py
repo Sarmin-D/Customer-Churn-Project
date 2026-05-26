@@ -295,15 +295,17 @@ if st.button("Predict Churn"):
 
         response = requests.post(url, json=data, timeout=60)
 
-        result = response.json()
         prediction = result.get("prediction")
         if prediction is None:
             st.error("No prediction from backend")
             st.stop()
+        result = response.json()
 
         # ✅ REAL probability from backend (no random)
         probability = result.get("probability", 0)
 
+        if probability > 1:
+            probability = probability / 100
         # ============================================
         # UPDATE STATS
         # ============================================
