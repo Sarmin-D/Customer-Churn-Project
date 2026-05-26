@@ -16,7 +16,6 @@ from sklearn.metrics import accuracy_score
 # LOAD DATASET FROM GITHUB RAW URL
 # ============================================
 
-url = "PASTE_YOUR_RAW_CSV_URL_HERE"
 
 df = pd.read_csv("https://raw.githubusercontent.com/Sarmin-D/Customer-Churn-Project/refs/heads/main/WA_Fn-UseC_-Telco-Customer-Churn%5B1%5D.csv")
 
