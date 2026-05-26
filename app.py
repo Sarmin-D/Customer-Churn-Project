@@ -353,8 +353,8 @@ if st.button("Predict Churn"):
         else:
             st.success("✅ Customer Will Stay")
 
-    except requests.exceptions.ConnectionError:
-        st.error("❌ Backend server not responding (FastAPI is down)")
+    # except requests.exceptions.ConnectionError:
+    #     st.error("❌ Backend server not responding (FastAPI is down)")
 
     except requests.exceptions.Timeout:
         st.error("⏰ Request timeout over")
