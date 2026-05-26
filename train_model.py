@@ -16,9 +16,9 @@ from sklearn.metrics import accuracy_score
 # LOAD DATASET FROM GITHUB RAW URL
 # ============================================
 
+url = "https://raw.githubusercontent.com/Sarmin-D/Customer-Churn-Project/refs/heads/main/WA_Fn-UseC_-Telco-Customer-Churn%5B1%5D.csv"
 
-df = pd.read_csv("https://raw.githubusercontent.com/Sarmin-D/Customer-Churn-Project/refs/heads/main/WA_Fn-UseC_-Telco-Customer-Churn%5B1%5D.csv")
-
+df = pd.read_csv(url, on_bad_lines="skip")
 print(df.head())
 
 # ============================================
@@ -109,16 +109,8 @@ print("Model Accuracy:", accuracy)
 # ============================================
 # SAVE MODEL
 # ============================================
-
-joblib.dump(
-    model,
-    "model.pkl"
-)
-
-joblib.dump(
-    scaler,
-    "scaler.pkl"
-)
+joblib.dump(model, "Churn_model.pkl")
+joblib.dump(scaler, "scaler.pkl")
 
 print()
 

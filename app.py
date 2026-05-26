@@ -1,21 +1,13 @@
 # ============================================
-# STREAMLIT CUSTOMER CHURN UI + DASHBOARD
+# STREAMLIT CUSTOMER CHURN UI
+# ============================================
+
+# ============================================
+# IMPORT LIBRARIES
 # ============================================
 
 import streamlit as st
 import requests
-import random
-
-# ============================================
-# SESSION STATE (DASHBOARD STATS)
-# ============================================
-
-if "total" not in st.session_state:
-    st.session_state.total = 0
-if "stay" not in st.session_state:
-    st.session_state.stay = 0
-if "churn" not in st.session_state:
-    st.session_state.churn = 0
 
 # ============================================
 # PAGE CONFIG
@@ -65,63 +57,145 @@ st.markdown(
 
 st.title("📊 Customer Churn Prediction System")
 
-st.write("AI Powered Customer Retention Prediction Dashboard")
+st.write(
+    "AI Powered Customer Retention Prediction Dashboard"
+)
 
 # ============================================
-# SIDEBAR INPUTS
+# SIDEBAR
 # ============================================
 
 st.sidebar.header("Customer Information")
 
-gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
+# ============================================
+# INPUT FIELDS
+# ============================================
 
-senior = st.sidebar.selectbox("Customer Type", ["Non-Senior", "Senior"])
+gender = st.sidebar.selectbox(
+    "Gender",
+    ["Male", "Female"]
+)
 
-partner = st.sidebar.selectbox("Partner", ["Yes", "No"])
+senior = st.sidebar.selectbox(
+    "Senior Citizen",
+    ["No", "Yes"]
+)
 
-dependents = st.sidebar.selectbox("Dependents", ["Yes", "No"])
+partner = st.sidebar.selectbox(
+    "Partner",
+    ["No", "Yes"]
+)
 
-tenure = st.sidebar.number_input("Customer Tenure (Months)", 0, 72, 12)
+dependents = st.sidebar.selectbox(
+    "Dependents",
+    ["No", "Yes"]
+)
 
-phone_service = st.sidebar.selectbox("Phone Service", ["No", "Yes"])
+tenure = st.sidebar.number_input(
+    "Customer Tenure (Months)",
+    min_value=0,
+    max_value=120,
+    value=12,
+    help="Customer kitne months se service use kar raha hai"
+)
 
-multiple_lines = st.sidebar.selectbox("Multiple Lines", ["No", "Yes"])
+phone_service = st.sidebar.selectbox(
+    "Phone Service",
+    ["No", "Yes"]
+)
 
-internet_service = st.sidebar.selectbox("Internet Service", ["DSL", "Fiber Optic", "No"])
+multiple_lines = st.sidebar.selectbox(
+    "Multiple Lines",
+    ["No", "Yes"]
+)
 
-online_security = st.sidebar.selectbox("Online Security", ["No", "Yes"])
+internet_service = st.sidebar.selectbox(
+    "Internet Service",
+    ["DSL", "Fiber Optic", "No"]
+)
 
-online_backup = st.sidebar.selectbox("Online Backup", ["No", "Yes"])
+online_security = st.sidebar.selectbox(
+    "Online Security",
+    ["No", "Yes"]
+)
 
-device_protection = st.sidebar.selectbox("Device Protection", ["No", "Yes"])
+online_backup = st.sidebar.selectbox(
+    "Online Backup",
+    ["No", "Yes"]
+)
 
-tech_support = st.sidebar.selectbox("Tech Support", ["No", "Yes"])
+device_protection = st.sidebar.selectbox(
+    "Device Protection",
+    ["No", "Yes"]
+)
 
-streaming_tv = st.sidebar.selectbox("Streaming TV", ["No", "Yes"])
+tech_support = st.sidebar.selectbox(
+    "Tech Support",
+    ["No", "Yes"]
+)
 
-streaming_movies = st.sidebar.selectbox("Streaming Movies", ["No", "Yes"])
+streaming_tv = st.sidebar.selectbox(
+    "Streaming TV",
+    ["No", "Yes"]
+)
+
+streaming_movies = st.sidebar.selectbox(
+    "Streaming Movies",
+    ["No", "Yes"]
+)
 
 contract = st.sidebar.selectbox(
     "Contract Type",
-    ["Month-to-Month", "One Year", "Two Year"]
+    [
+        "Month-to-Month",
+        "One Year",
+        "Two Year"
+    ]
 )
 
-paperless_billing = st.sidebar.selectbox("Paperless Billing", ["No", "Yes"])
+paperless_billing = st.sidebar.selectbox(
+    "Paperless Billing",
+    ["No", "Yes"]
+)
 
 payment_method = st.sidebar.selectbox(
     "Payment Method",
-    ["Electronic Check", "Mailed Check", "Bank Transfer", "Credit Card"]
+    [
+        "Electronic Check",
+        "Mailed Check",
+        "Bank Transfer",
+        "Credit Card"
+    ]
 )
 
-monthly_charges = st.sidebar.number_input("Monthly Charges", 0.0, value=70.0)
+monthly_charges = st.sidebar.number_input(
+    "Monthly Charges",
+    min_value=0.0,
+    value=70.0
+)
 
-total_charges = st.sidebar.number_input("Total Charges", 0.0, value=1000.0)
+total_charges = st.sidebar.number_input(
+    "Total Charges",
+    min_value=0.0,
+    value=1000.0
+)
 
 # ============================================
-# ENCODING
+# TEXT VALUES KO NUMBERS ME CONVERT KARNA
 # ============================================
 
-senior = 1 if senior == "Senior" else 0
+# GENDER MAPPING
+
+gender_map = {
+    "Male": 0,
+    "Female": 1
+}
+
+gender = gender_map[gender]
+
+# YES / NO VALUES
+
+senior = 1 if senior == "Yes" else 0
 
 partner = 1 if partner == "Yes" else 0
 
@@ -145,13 +219,27 @@ streaming_movies = 1 if streaming_movies == "Yes" else 0
 
 paperless_billing = 1 if paperless_billing == "Yes" else 0
 
-gender = 0 if gender == "Male" else 1
+# INTERNET SERVICE MAPPING
 
-internet_map = {"DSL": 0, "Fiber Optic": 1, "No": 2}
+internet_map = {
+    "DSL": 0,
+    "Fiber Optic": 1,
+    "No": 2
+}
+
 internet_service = internet_map[internet_service]
 
-contract_map = {"Month-to-Month": 0, "One Year": 1, "Two Year": 2}
+# CONTRACT TYPE MAPPING
+
+contract_map = {
+    "Month-to-Month": 0,
+    "One Year": 1,
+    "Two Year": 2
+}
+
 contract = contract_map[contract]
+
+# PAYMENT METHOD MAPPING
 
 payment_map = {
     "Electronic Check": 0,
@@ -159,19 +247,27 @@ payment_map = {
     "Bank Transfer": 2,
     "Credit Card": 3
 }
+
 payment_method = payment_map[payment_method]
 
 # ============================================
-# PREDICT BUTTON
+# PREDICT BUTTON (FINAL CLEAN VERSION)
 # ============================================
 
-# ============================================
-# PREDICT BUTTON
-# ============================================
+if "total" not in st.session_state:
+    st.session_state.total = 0
+
+if "churn" not in st.session_state:
+    st.session_state.churn = 0
+
+if "stay" not in st.session_state:
+    st.session_state.stay = 0
+
+
 
 if st.button("Predict Churn"):
 
-    url = "https://customer-churn-project-ouq1.onrender.com/predict"
+    url = "http://127.0.0.1:8000/predict"
 
     data = {
         "gender": gender,
@@ -195,24 +291,16 @@ if st.button("Predict Churn"):
         "TotalCharges": total_charges
     }
 
-    # ============================================
-    # SAFE API CALL (TRY/EXCEPT ADDED)
-    # ============================================
-
     try:
         response = requests.post(url, json=data, timeout=60)
-
         response.raise_for_status()
 
         result = response.json()
 
         prediction = result["prediction"]
 
-        # ============================================
-        # SIMULATED PROBABILITY
-        # ============================================
-
-        probability = round(random.uniform(0.2, 0.95), 2)
+        # ✅ REAL probability from backend (no random)
+        probability = result.get("probability", 0)
 
         # ============================================
         # UPDATE STATS
@@ -265,12 +353,8 @@ if st.button("Predict Churn"):
         else:
             st.success("✅ Customer Will Stay")
 
-    # ============================================
-    # ERROR HANDLING
-    # ============================================
-
     except requests.exceptions.ConnectionError:
-        st.error("❌ Backend server issue  (FastAPI is down)")
+        st.error("❌ Backend server not responding (FastAPI is down)")
 
     except requests.exceptions.Timeout:
         st.error("⏰ Request timeout over")

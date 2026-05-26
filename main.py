@@ -22,7 +22,7 @@ app = FastAPI(
 # ============================================
 
 model = joblib.load(
-    "model.pkl"
+    "Churn_model.pkl"
 )
 
 scaler = joblib.load(
