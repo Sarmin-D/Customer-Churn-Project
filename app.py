@@ -359,5 +359,5 @@ if st.button("Predict Churn"):
     except requests.exceptions.Timeout:
         st.error("⏰ Request timeout over")
 
-    except Exception as e:
-        st.error(f"❌ Unexpected error: {str(e)}")
+    # except Exception as e:
+    #     st.error(f"❌ Unexpected error: {str(e)}")
