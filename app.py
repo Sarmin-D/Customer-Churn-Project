@@ -292,8 +292,11 @@ if st.button("Predict Churn"):
     }
 
     try:
+
         response = requests.post(url, json=data, timeout=60)
-        response.raise_for_status()
+
+        st.write("Status Code:", response.status_code)
+        st.write("Response:", response.text)
 
         result = response.json()
 
