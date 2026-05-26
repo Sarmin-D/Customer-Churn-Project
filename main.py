@@ -63,8 +63,7 @@ class CustomerData(BaseModel):
 def home():
 
     return {
-        "message":
-        "Customer Churn Prediction API Running"
+        "message": "Customer Churn Prediction API Running"
     }
 
 # ============================================
@@ -75,6 +74,7 @@ def home():
 def predict(data: CustomerData):
 
     input_data = np.array([[
+
         data.gender,
         data.SeniorCitizen,
         data.Partner,
@@ -94,27 +94,25 @@ def predict(data: CustomerData):
         data.PaymentMethod,
         data.MonthlyCharges,
         data.TotalCharges
+
     ]])
 
     # SCALE DATA
-    scaled_data = scaler.transform(
-        input_data
-    )
+    scaled_data = scaler.transform(input_data)
 
     # PREDICTION
-    prediction = model.predict(
-        scaled_data
-    )[0]
+    prediction = model.predict(scaled_data)[0]
+
+    # PROBABILITY (FIX ADDED)
+    probability = model.predict_proba(scaled_data)[0][1]
 
     # RESULT
     if prediction == 1:
-
         result = "Customer May Churn"
-
     else:
-
         result = "Customer Will Stay"
 
     return {
-        "prediction": result
+        "prediction": result,
+        "probability": float(probability)
     }
