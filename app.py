@@ -295,12 +295,11 @@ if st.button("Predict Churn"):
 
         response = requests.post(url, json=data, timeout=60)
 
-        st.write("Status Code:", response.status_code)
-        st.write("Response:", response.text)
-
         result = response.json()
-
-        prediction = result["prediction"]
+        prediction = result.get("prediction")
+        if prediction is None:
+            st.error("No prediction from backend")
+            st.stop()
 
         # ✅ REAL probability from backend (no random)
         probability = result.get("probability", 0)
@@ -356,11 +355,11 @@ if st.button("Predict Churn"):
         else:
             st.success("✅ Customer Will Stay")
 
-    # except requests.exceptions.ConnectionError:
-    #     st.error("❌ Backend server not responding (FastAPI is down)")
+    except requests.exceptions.ConnectionError:
+        st.error("❌ Backend server not responding (FastAPI is down)")
 
     except requests.exceptions.Timeout:
         st.error("⏰ Request timeout over")
 
-    # except Exception as e:
-    #     st.error(f"❌ Unexpected error: {str(e)}")
+    except Exception as e:
+        st.error(f"❌ Unexpected error: {str(e)}")
