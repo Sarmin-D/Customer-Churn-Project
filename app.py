@@ -267,7 +267,7 @@ if "stay" not in st.session_state:
 
 if st.button("Predict Churn"):
 
-    url = "http://127.0.0.1:8000/predict"
+    url = "https://customer-churn-project-ouq1.onrender.com"
 
     data = {
         "gender": gender,
